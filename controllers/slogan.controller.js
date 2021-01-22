@@ -4,7 +4,7 @@ const slogan = require("../models/slogan.model.js");
 exports.genSlogan = (req, res) => {
   slogan.getSloganList((err, data) => {
   	const random_num = Math.floor(Math.random()*data.length);
-  	if (random_num > 6) {
+  	if (random_num > 5) {
   		data_f = data.slice(random_num-3, random_num)
   	}
   	else {
