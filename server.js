@@ -27,6 +27,7 @@ process.env.accessTokenSecret = require('crypto').randomBytes(64).toString('hex'
 
 require("./routes/blog.routes.js")(app);
 require("./routes/login.routes.js")(app);
+require("./routes/slogan.routes.js")(app);
 
 // set port, listen for requests
 app.listen(port, () => {
