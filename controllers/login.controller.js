@@ -22,7 +22,7 @@ exports.loginUser = (req, res) => {
 
         // refreshTokens.push(refreshToken);
 
-        jwt.verify(accessToken, a, (err, success) => {
+        jwt.verify(accessToken, accessToken, (err, success) => {
             if (err) {
                 res.send(`Error verify: ${error}`);
             }
