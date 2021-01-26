@@ -10,11 +10,6 @@ const User = function(User) {
   this.role_id = User.role_id;
 };
 
-User.testFunc = () => {
-  console.log('212121212')
-};
-
-  
 User.findUser = (UserName, UserPassword, result) => {
 
   sql.query(`SELECT * FROM User WHERE user_name = ? AND password = ?`, [UserName, UserPassword], (err, res) => {
