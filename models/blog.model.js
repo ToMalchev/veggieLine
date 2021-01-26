@@ -98,6 +98,27 @@ Blog.updateById = (id, Blog, result) => {
   );
 };
 
+Blog.updateImageById = (id, imagePath, result) => {
+  sql.query(
+    "UPDATE Blog SET image = ? WHERE blog_id = ?",
+    [imagePath, id],
+    (err, res) => {
+      if (err) {
+        console.log("error: ", err);
+        result(null, err);
+        return;
+      }
+      if (res.affectedRows == 0) {
+        // not found Blog with the id
+        result({ kind: "not_found" }, null);
+        return;
+      }
+
+      result(null, { imagePath: imagePath, });
+    }
+  );
+};
+
 Blog.remove = (id, result) => {
   sql.query("DELETE FROM Blogs WHERE blog_id = ?", id, (err, res) => {
     if (err) {

@@ -2,7 +2,12 @@ const express = require("express");
 const cors = require("cors");
 const bodyParser = require("body-parser");
 const jwt = require('jsonwebtoken');
+const dotenv = require("dotenv");
+
 const port = 8080;
+
+// get config vars
+dotenv.config();
 
 const app = express();
 
@@ -18,8 +23,6 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.get("/", (req, res) => {
   res.json({ message: "Welcome to veggiline application." });
 });
-process.env.SECRETKEY = 'Mecho112'
-process.env.accessTokenSecret = require('crypto').randomBytes(64).toString('hex');
  
 // app.get("/health", (req, res) => {
 //   res.json({ message: "Welcome to health page." });

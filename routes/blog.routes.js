@@ -1,5 +1,7 @@
 module.exports = app => {
   const blog = require("../controllers/blog.controller.js");
+  const upload = require("../controllers/upload.controller.js");
+  const {verify} = require('../middleware/login.js');
   
   // Create a new Blog
   app.post("/blog/add", blog.create);
@@ -21,4 +23,7 @@ module.exports = app => {
 
   // Delete all Blogs
   app.delete("/blogs/delete", blog.deleteAll);
+
+  // Upload blog image
+  app.post("/blog/image", upload.uploadImage);
 };
