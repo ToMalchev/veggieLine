@@ -28,11 +28,11 @@ exports.loginUser = (req, res) => {
             }
             else {
                 console.log('Successs ' + success)
-                res.json(accessToken)
+                // res.json(accessToken)
             }
     }); 
 
-        // res.json(accessToken);
+        res.json(accessToken);
     } else {
         res.send(`Username or password incorrect: ${error}`);
     }
