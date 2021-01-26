@@ -6,7 +6,7 @@ const dest_path = "/home/veggie/Projects/VeggieLine_FE/images/";
 var image_name;
 
 let storage = multer.diskStorage({
-   destination: "/home/todorm/Pictures/",
+   destination: dest_path,
    filename: function(req, file, cb){
    	  image_name = "IMAGE-" + req.blogID + path.extname()
       cb(null,image_name);
