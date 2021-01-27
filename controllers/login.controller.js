@@ -12,26 +12,23 @@ exports.loginUser = (req, res) => {
     // filter user from the users array by username and password
     User.findUser(username, password, (error, user) => {
         console.log(error)
-    if (user) {
-        console.log(user)
-        
-        const accessToken = generateAccessToken({username: user.username, role: user.role_id})
+        if (user) {
 
-        console.log(accessToken)
-        jwt.verify(accessToken, process.env.TOKEN_SECRET, (err, success) => {
-            if (err) {
-                res.send(`Unable to verify token: ${error}`);
-            }
-            else {
-                console.log('Successs ' + success)
-                res.json({user_name: user.user_name, role: user.role_id, token: accessToken});
-                // res.json(accessToken)
-            }
-    }); 
+            const accessToken = generateAccessToken({username: user.username, role: user.role_id})
 
-        // res.json({user_name: user.user_name, role: user.role_id, token: accessToken});
-    } else {
-        res.send(`Username or password incorrect: ${error}`);
-    }
+            console.log(accessToken)
+            jwt.verify(accessToken, process.env.TOKEN_SECRET, (err, success) => {
+                if (err) {
+                    res.status(500).send(`Unable to verify token!`);
+                }
+                else {
+                    res.json({user_name: user.user_name, role: user.role_id, token: accessToken});
+                    // res.json(accessToken)
+                }
+            });
+            // res.json({user_name: user.user_name, role: user.role_id, token: accessToken});
+        } else {
+            res.status(404).send(`The user hasn't been found. Username or password incorrect may be incorrect`);
+        }
     });
 };
