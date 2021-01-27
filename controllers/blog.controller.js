@@ -16,17 +16,19 @@ exports.create = (req, res) => {
     content: req.body.content,
     image: req.body.image,
     blog_category_id: req.body.blog_category_id,
-    user_id: req.body.user_id
+    user_id: req.body.user_id,
+    blog_id: null,
   });
 
   // Save Blog in the database
   Blog.create(blog, (err, data) => {
+    console.log(data)
     if (err)
       res.status(500).send({
         message:
           err.message || "Some error occurred while creating the Blog."
       });
-    else res.send(data);
+    else res.send(JSON.stringify(data));
   });
 };
 

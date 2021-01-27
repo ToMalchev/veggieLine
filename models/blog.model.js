@@ -2,6 +2,7 @@ const sql = require("./db.js");
 
 // constructor
 const Blog = function(Blog) {
+  this.blog_id = Blog.blog_id;
   this.title = Blog.title;
   this.content = Blog.content;
   this.image = Blog.image;
@@ -63,15 +64,7 @@ Blog.create = (Blog, result) => {
         result(null, err);
         return;
       }
-
-      // if (res.affectedRows == 0) {
-      //   // not found Blog with the id
-      //   result({ kind: "not_found" }, null);
-      //   return;
-      // }
-
-      // console.log("updated Blog: ", { id: id, ...Blog });
-      result(null, Blog)
+      result(null, res.insert_id)
     }
   );
 };
@@ -86,13 +79,11 @@ Blog.updateById = (id, Blog, result) => {
         result(null, err);
         return;
       }
-
       if (res.affectedRows == 0) {
         // not found Blog with the id
         result({ kind: "not_found" }, null);
         return;
       }
-
       result(null, { id: id, ...Blog });
     }
   );
@@ -113,8 +104,7 @@ Blog.updateImageById = (id, imagePath, result) => {
         result({ kind: "not_found" }, null);
         return;
       }
-
-      result(null, { imagePath: imagePath, });
+      result(null, res.affectedRows);
     }
   );
 };

@@ -1,36 +1,48 @@
 const Blog = require("../models/blog.model.js");
-const uploadFile = require("../middleware/upload.js")
+const path = require('path')
+const multer  = require('multer');
 
-exports.uploadImage = async (req, res) => {
-console.log('hhajkdhbjkadhjandj')
-  try {
+const imageDir = '/home/veggie/Projects/VeggieLine_FE/images/';
+let imageName;
 
-    await uploadFile(req, res);
+const storage = multer.diskStorage({
+  destination: function(req, file, cb) {
+      cb(null, './test');
+  },
 
-    if (req.file == undefined) {
-      return res.status(400).send({ message: "Please upload a file!" });
+  // By default, multer removes file extensions so let's add them back
+  filename: function(req, file, cb) {
+    imageName = imageName + path.extname(file.originalname);
+    cb(null, imageName);
+  }
+});
+
+let upload = multer({ storage: storage }).single('image');
+
+exports.uploadImage = (req, res) => {
+  let blogId = req.query.blogId;
+  imageName = "IMAGE-" + blogId;
+
+  upload(req, res, (err) => {
+    if (req.fileValidationError) {
+      return res.status(500).send(req.fileValidationError);
     }
-    const blog_id = req.blog_id
-    const image_path = uploadFile.image_name + uploadFile.dest_path
-    const blog = Blog.updateImageById(blog_id, image_path, res)
-    
-    res.status(200).send({
-      message: "Uploaded the file successfully: " + uploadFile.image_name
-    });
-  } catch (err) {
-    res.status(500).send({
-      message: `Could not upload the file: ${uploadFile.image_name}. ${err}`,
-    });
+    else if (!req.file) {
+      return res.status(404).send('Please select an image to upload');
+    }
+    else if (err instanceof multer.MulterError) {
+      return res.status(500).send(err);
+    }
+    else if (err) {
+      return res.status(500).send(err);
+    }
+  });
+  try {
+    if (Blog.updateImageById(blogId, imageName) == 0) {
+      return res.status(404).send(`Not found blog with id: ${blogId}`)
+    }
+    return res.send('Image uploaded!');
+  } catch(err) {
+    return res.status(500).send('Failed to update image name!');
   }
 };
-
-
-// exports.uploadImage = (req, res) => {
-//   Blog.((err, data) => {
-//      console.log("Request ---", req.body);
-//       console.log("Request file ---", req.file);//Here you get file.
-//       /*Now do where ever you want to do*/
-//       if(!err)
-//          return res.send(200).end();
-//   });
-// };

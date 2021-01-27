@@ -1,10 +1,10 @@
 module.exports = app => {
   const blog = require("../controllers/blog.controller.js");
   const upload = require("../controllers/upload.controller.js");
-  const {verify} = require('../middleware/login.js');
-  
+  const verify = require('../middleware/login.js');
+
   // Create a new Blog
-  app.post("/blog/add", blog.create);
+  app.post("/blog/add", verify.authenticateJWT, blog.create);
 
   // Retrieve all Blogs
   app.get("/blogs", blog.findAll);
@@ -16,14 +16,14 @@ module.exports = app => {
   app.get("/blog", blog.findOne);
 
   // Update a Blog with customerId
-  app.put("/update/blog/:id", blog.update);
+  app.put("/update/blog/:id", verify.authenticateJWT, blog.update);
 
   // Delete a Blog with customerId
-  app.delete("/blogs/delete/:id", blog.delete);
+  app.delete("/blogs/delete/:id", verify.authenticateJWT, blog.delete);
 
   // Delete all Blogs
-  app.delete("/blogs/delete", blog.deleteAll);
+  app.delete("/blogs/delete", verify.authenticateJWT, blog.deleteAll);
 
   // Upload blog image
-  app.post("/blog/image", upload.uploadImage);
+  app.post("/blog/image", verify.authenticateJWT, upload.uploadImage);
 };
