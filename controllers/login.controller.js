@@ -22,7 +22,7 @@ exports.loginUser = (req, res) => {
                     res.status(500).send(`Unable to verify token!`);
                 }
                 else {
-                    res.json({user_name: user.user_name, role: user.role_id, token: accessToken});
+                    res.json({role: user.role_id, token: accessToken});
                     // res.json(accessToken)
                 }
             });
