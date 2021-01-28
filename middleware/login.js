@@ -2,9 +2,12 @@ const jwt = require("jsonwebtoken");
 
 exports.authenticateJWT = (req, res, next) => {
     const authHeader = req.headers.authorization;
+
     if (authHeader) {
         const token = authHeader;
-        jwt.verify(token, process.env.TokenSecret, (err, user) => {
+        console.log(token)
+        console.log('az sum pich')
+        jwt.verify(token, process.env.TOKEN_SECRET, (err, user) => {
             if (err) {
                 return res.sendStatus(403);
             }
