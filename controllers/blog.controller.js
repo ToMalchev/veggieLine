@@ -1,4 +1,5 @@
 const Blog = require("../models/blog.model.js");
+const BlogCategory = require("../models/blogCategory.model.js")
 
 // Create and Save a new Blog
 exports.create = (req, res) => {
@@ -23,6 +24,7 @@ exports.create = (req, res) => {
   // Save Blog in the database
   Blog.create(blog, (err, data) => {
     console.log(data)
+    console.log(12121)
     if (err)
       res.status(500).send({
         message:
@@ -130,3 +132,25 @@ exports.deleteAll = (req, res) => {
   });
 };
 
+exports.search = (req, res) => {
+  const categories = req.query.categories;
+  const name = req.query.name;
+  var blog_ids;
+  if (categories) {
+    let categories_ids = categories.map(function (obj) {
+      return obj.categoty_id;
+    });
+    blog_ids = BlogCategory.getBlogCategory(categories_ids)[1].map(function (obj) {
+      return obj.blog_id
+    });
+  }
+  Blog.search(name, blog_ids, (err, data)=>{
+    if (err)
+      res.status(500).send({
+        message:
+          err.message || "Some error occurred while retrieving Blogs."
+      });
+    else res.send(data);
+  });
+
+};

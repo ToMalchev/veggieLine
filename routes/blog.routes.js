@@ -26,4 +26,6 @@ module.exports = app => {
 
   // Upload blog image
   app.post("/blog/image", verify.authenticateJWT, upload.uploadImage);
+
+  app.get("/search", blog.search)
 };

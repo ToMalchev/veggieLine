@@ -10,7 +10,6 @@ const Blog = function(Blog) {
   this.user_id = Blog.user_id
 };
 
-  
 
 Blog.findById = (BlogId, result) => {
   sql.query(`SELECT * FROM Blog WHERE blog_id = ${BlogId}`, (err, res) => {
@@ -135,6 +134,30 @@ Blog.removeAll = result => {
       return;
     }
 
+    result(null, res);
+  });
+};
+
+Blog.search = (name, blog_ids, result) => {
+  var search_query = "SELECT * FROM Blogs";
+  var search_by = "WHERE";
+
+  if (blog_ids.length > 0) {
+    search_by += " blog_id in (${blog_ids})";
+  }
+  if (name != '') {
+    search_by += " (title LIKE %${name}% OR description LIKE %${name}%)";
+  }
+  if (search_by != "WHERE"){
+
+    search_query += search_by
+  } 
+  sql.query(search_by, (err, res) => {
+    if (err) {
+      console.log("error: ", err);
+      result(null, err);
+      return;
+    }
     result(null, res);
   });
 };
