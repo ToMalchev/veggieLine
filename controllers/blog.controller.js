@@ -133,16 +133,28 @@ exports.deleteAll = (req, res) => {
 };
 
 exports.search = (req, res) => {
+  console.log(req.query)
   const categories = req.query.categories;
   const name = req.query.name;
   var blog_ids;
   if (categories) {
-    let categories_ids = categories.map(function (obj) {
-      return obj.categoty_id;
+    // let categories_ids = categories.map(function (obj) {
+    //   return obj.categoty_id;
+    // });
+    let blog_category = BlogCategory.getBlogCategory(categories, (err, data) => {
+      if (data) {
+        return data;
+      } else {
+        return;
+      }
     });
-    blog_ids = BlogCategory.getBlogCategory(categories_ids)[1].map(function (obj) {
-      return obj.blog_id
-    });
+    console.log(blog_category)
+    if (blog_category) {
+      blog_ids = blog_category.map(function (obj) {
+        return obj.blog_id
+      });
+      console.log(blog_ids)
+    }
   }
   Blog.search(name, blog_ids, (err, data)=>{
     if (err)

@@ -7,13 +7,19 @@ const BlogCategory = function(BlogCategory) {
 };
 
 BlogCategory.getBlogCategory = (category_ids, result) => {
-  sql.query("SELECT * FROM BlogCategory WHERE category_id in (?)", [category_ids], (err, res) => {
+  sql.query("SELECT * FROM BlogCategory WHERE category_id IN (?)", [category_ids], (err, res) => {
+  	console.log(category_ids)
+  	console.log(res)
     if (err) {
       console.log("error: ", err);
       result(null, err);
       return;
     }
-    result(null, res);
+    if (res.lenght) {
+      result(null, res);
+      return;
+    }
+    result(null, null);
   });
 };
 

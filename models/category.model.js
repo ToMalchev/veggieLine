@@ -7,6 +7,6 @@ Blog.getAll = result => {
       result(null, err);
       return;
     }
-    result(null, res);
+    return res;
   });
 };

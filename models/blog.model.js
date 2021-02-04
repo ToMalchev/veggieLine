@@ -139,20 +139,21 @@ Blog.removeAll = result => {
 };
 
 Blog.search = (name, blog_ids, result) => {
-  var search_query = "SELECT * FROM Blogs";
-  var search_by = "WHERE";
+  var search_query = "SELECT * FROM Blog";
+  var search_by = " WHERE";
 
-  if (blog_ids.length > 0) {
-    search_by += " blog_id in (${blog_ids})";
+  if (blog_ids && blog_ids.length > 0) {
+    search_by += " blog_id in (" + blog_ids + ")";
   }
-  if (name != '') {
-    search_by += " (title LIKE %${name}% OR description LIKE %${name}%)";
+  if (name && name != '') {
+    let s_name = "'%" + name + "%'"
+    search_by += " (title LIKE " + s_name + " OR description LIKE " + s_name + ")";
   }
-  if (search_by != "WHERE"){
+  if (search_by != " WHERE"){
 
     search_query += search_by
   } 
-  sql.query(search_by, (err, res) => {
+  sql.query(search_query, (err, res) => {
     if (err) {
       console.log("error: ", err);
       result(null, err);
