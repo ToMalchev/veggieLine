@@ -2,7 +2,7 @@ const Slogan = require("../models/slogan.model.js");
 
 // Retrieve all Blogs from the database.
 exports.genSlogan = (req, res) => {
-  slogan.getSloganList((err, data) => {
+  Slogan.getSloganList((err, data) => {
   	const random_num = Math.floor(Math.random()*data.length);
   	if (random_num > 5) {
   		data = data.slice(random_num-3, random_num)
