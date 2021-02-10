@@ -20,10 +20,9 @@ exports.genSlogan = (req, res) => {
 };
 
 exports.createSlogan = (req, res) => {
-  let slogan_req = req.body;
-  console.log(req.data)
-  console.log(slogan_req)
-  Slogan.create(slogan_req, (err, data) =>{
+  console.log(req.body)
+  console.log('skaljslkajlksjalksjlka')
+  Slogan.create(req.body, (err, data) =>{
     if (err) {
       res.status(500).send({
         message:
