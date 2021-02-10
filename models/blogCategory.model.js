@@ -6,21 +6,26 @@ const BlogCategory = function(BlogCategory) {
   this.blog_id = BlogCategory.blog_id;
 };
 
-BlogCategory.getBlogCategory = (category_ids, result) => {
-  sql.query("SELECT * FROM BlogCategory WHERE category_id IN (?)", [category_ids], (err, res) => {
+BlogCategory.getBlogCategory = function (category_ids) {
+  sql.query("SELECT * FROM BlogCategory WHERE category_id IN (?)", [category_ids], function (err, res) {
+  	console.log("daldlknalkdnakdnkjanda")
   	console.log(category_ids)
   	console.log(res)
+  	console.log(res.length)
     if (err) {
       console.log("error: ", err);
-      result(null, err);
-      return;
+      return err;
     }
-    if (res.lenght) {
-      result(null, res);
-      return;
-    }
-    result(null, null);
-  });
+    // if (res.lenght > 0) {
+    //   console.log("sajsa")
+    //   console.log(res)
+    //   // result(null, res);
+    //   return res;
+    // }
+    console.log('kur')
+    return res
+    // result(null, null);
+  }).then();
 };
 
 module.exports = BlogCategory;

@@ -4,5 +4,6 @@ module.exports = app => {
 
   // Slogan
   app.get("/slogans", slogan.genSlogan);
+  app.post("/slogans/add", slogan.createSlogan)
 
 };

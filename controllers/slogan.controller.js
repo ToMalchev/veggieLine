@@ -1,4 +1,4 @@
-const slogan = require("../models/slogan.model.js");
+const Slogan = require("../models/slogan.model.js");
 
 // Retrieve all Blogs from the database.
 exports.genSlogan = (req, res) => {
@@ -18,3 +18,20 @@ exports.genSlogan = (req, res) => {
     else res.send(data);
   });
 };
+
+exports.createSlogan = (req, res) => {
+  let slogan_req = req.body;
+  console.log(req.data)
+  console.log(slogan_req)
+  Slogan.create(slogan_req, (err, data) =>{
+    if (err) {
+      res.status(500).send({
+        message:
+          err.message || "Some error occurred while creating the Blog."
+      });
+      return
+    }
+    res.status(200).send({message: "Successfuly created Slogan"})
+  });
+
+}

@@ -21,4 +21,19 @@ Slogan.getSloganList = (result) => {
   });
 };
 
+Slogan.create = (slogan, result) => {
+  console.log(slogan)
+  sql.query(
+    "INSERT INTO Slogan (name) VALUES (?)",
+    slogan, (err, res) => {
+      if (err) {
+        console.log("error: ", err);
+        result(null, err);
+        return;
+      }
+      result(null, res.insert_id)
+    }
+  );
+};
+
 module.exports = Slogan;

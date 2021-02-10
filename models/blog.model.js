@@ -6,7 +6,6 @@ const Blog = function(Blog) {
   this.title = Blog.title;
   this.content = Blog.content;
   this.image = Blog.image;
-  this.blog_category_id = Blog.blog_category_id
   this.user_id = Blog.user_id
 };
 
@@ -138,22 +137,22 @@ Blog.removeAll = result => {
   });
 };
 
-Blog.search = (name, blog_ids, result) => {
-  var search_query = "SELECT * FROM Blog";
-  var search_by = " WHERE";
+Blog.search = (name, category_ids, result) => {
+  let query_1 = 'SELECT b.blog_id,'
+        + '       b.title,'
+        + '       b.content,'
+        + '       b.image,'
+        + '       b.description,'
+        + '       c.category_title'
+        + '  FROM Blog b, Category c, BlogCategory bc'
+        + ' WHERE b.blog_id = bc.blog_id'
+        + '   AND c.category_id = bc.category_id';
 
-  if (blog_ids && blog_ids.length > 0) {
-    search_by += " blog_id in (" + blog_ids + ")";
-  }
-  if (name && name != '') {
-    let s_name = "'%" + name + "%'"
-    search_by += " (title LIKE " + s_name + " OR description LIKE " + s_name + ")";
-  }
-  if (search_by != " WHERE"){
+  let query_2 = name? ` AND (b.title like '%${name}%' OR b.description like '%${name}%')`:"";
+  let query_3 = (category_ids.length >0 && category_ids[0]!='')? ` AND b.blog_id IN (SELECT blog_id FROM BlogCategory WHERE category_id IN (${category_ids}));`: ";";
 
-    search_query += search_by
-  } 
-  sql.query(search_query, (err, res) => {
+  let final_query = query_1 + query_2 + query_3;
+  sql.query(final_query, (err, res) => {
     if (err) {
       console.log("error: ", err);
       result(null, err);
