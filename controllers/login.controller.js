@@ -14,7 +14,7 @@ exports.loginUser = (req, res) => {
         console.log(error)
         if (user) {
 
-            const accessToken = generateAccessToken({username: user.username, role: user.role_id})
+            const accessToken = generateAccessToken({username: user.username, role: user.role_id, id: user.user_id})
 
             console.log(accessToken)
             jwt.verify(accessToken, process.env.TOKEN_SECRET, (err, success) => {

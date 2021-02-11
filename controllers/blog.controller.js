@@ -9,28 +9,35 @@ exports.create = (req, res) => {
       message: "Content can not be empty!"
     });
   }
-  console.log(req.body)
-  console.log(req.body.blog_category_id)
+  console.log(req.body.blog);
+  let incomeBlog = req.body.blog;
   // Create a Blog
   const blog = new Blog({
-    title: req.body.title,
-    content: req.body.content,
-    image: req.body.image,
-    blog_category_id: req.body.blog_category_id,
-    user_id: req.body.user_id,
-    blog_id: null,
+    title: incomeBlog.title,
+    content: incomeBlog.content,
+    image: incomeBlog.image,
+    description: incomeBlog.description,
+    user_id: req.user.id,
+    blog_id: null
   });
 
   // Save Blog in the database
-  Blog.create(blog, (err, data) => {
-    console.log(data)
-    console.log(12121)
-    if (err)
-      res.status(500).send({
-        message:
-          err.message || "Some error occurred while creating the Blog."
-      });
-    else res.send(JSON.stringify(data));
+  Blog.create(blog, (err, blogId) => {
+
+    if(err) {
+      res.status(500).send("Some error occurred while saving blog.")
+    } else {
+      console.log("Result blog id")
+      console.log(blogId)
+      let categoryList = [];
+      incomeBlog.categories.forEach(category => {categoryList.push([blogId, category.category_id]);});
+      console.log(categoryList);
+      BlogCategory.create(categoryList, (err_1, data) => {
+        if (err_1) {
+          res.status(500).send("Some error occurred while saving blog category.")
+        }
+        else res.send("Blog successfully added!");
+      });    }
   });
 };
 

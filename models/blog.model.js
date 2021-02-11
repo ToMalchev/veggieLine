@@ -6,9 +6,9 @@ const Blog = function(Blog) {
   this.title = Blog.title;
   this.content = Blog.content;
   this.image = Blog.image;
-  this.user_id = Blog.user_id
+  this.user_id = Blog.user_id;
+  this.categories = Blog.categories;
 };
-
 
 Blog.findById = (BlogId, result) => {
   sql.query(`SELECT * FROM Blog WHERE blog_id = ${BlogId}`, (err, res) => {
@@ -17,8 +17,8 @@ Blog.findById = (BlogId, result) => {
       result(err, null);
       return;
     }
-
     if (res.length) {
+
       result(null, res[0]);
       return;
     }
@@ -32,7 +32,7 @@ Blog.getAll = result => {
   sql.query("SELECT * FROM Blog", (err, res) => {
     if (err) {
       console.log("error: ", err);
-      result(null, err);
+      result(err, null);
       return;
     }
 
@@ -44,7 +44,7 @@ Blog.getLimited = (limit, result) => {
   sql.query("SELECT * FROM Blog ORDER BY 'created_at' LIMIT ?", [limit], (err, res) => {
     if (err) {
       console.log("error: ", err);
-      result(null, err);
+      result(err, null);
       return;
     }
 
@@ -53,16 +53,17 @@ Blog.getLimited = (limit, result) => {
 };
 
 Blog.create = (Blog, result) => {
-  console.log(Blog)
+  delete Blog.categories;
   sql.query(
     "INSERT INTO Blog SET ?",
     Blog, (err, res) => {
       if (err) {
         console.log("error: ", err);
-        result(null, err);
+        result(err, null);
         return;
       }
-      result(null, res.insert_id)
+      console.log(res);
+      result(null, res.insertId);
     }
   );
 };
@@ -74,7 +75,7 @@ Blog.updateById = (id, Blog, result) => {
     (err, res) => {
       if (err) {
         console.log("error: ", err);
-        result(null, err);
+        result(err, null);
         return;
       }
       if (res.affectedRows == 0) {
@@ -94,7 +95,7 @@ Blog.updateImageById = (id, imagePath, result) => {
     (err, res) => {
       if (err) {
         console.log("error: ", err);
-        result(null, err);
+        result(err, null);
         return;
       }
       if (res.affectedRows == 0) {
@@ -111,7 +112,7 @@ Blog.remove = (id, result) => {
   sql.query("DELETE FROM Blogs WHERE blog_id = ?", id, (err, res) => {
     if (err) {
       console.log("error: ", err);
-      result(null, err);
+      result(err, null);
       return;
     }
 
@@ -129,7 +130,7 @@ Blog.removeAll = result => {
   sql.query("DELETE FROM Blogs", (err, res) => {
     if (err) {
       console.log("error: ", err);
-      result(null, err);
+      result(err, null);
       return;
     }
 
@@ -143,7 +144,7 @@ Blog.search = (name, category_ids, result) => {
         + '       b.content,'
         + '       b.image,'
         + '       b.description,'
-        + '       c.category_title'
+        + '       c.name'
         + '  FROM Blog b, Category c, BlogCategory bc'
         + ' WHERE b.blog_id = bc.blog_id'
         + '   AND c.category_id = bc.category_id';
@@ -155,7 +156,7 @@ Blog.search = (name, category_ids, result) => {
   sql.query(final_query, (err, res) => {
     if (err) {
       console.log("error: ", err);
-      result(null, err);
+      result(err, null);
       return;
     }
     result(null, res);

@@ -6,8 +6,8 @@ const BlogCategory = function(BlogCategory) {
   this.blog_id = BlogCategory.blog_id;
 };
 
-BlogCategory.getBlogCategory = function (category_ids) {
-  sql.query("SELECT * FROM BlogCategory WHERE category_id IN (?)", [category_ids], function (err, res) {
+BlogCategory.getBlogCategory = (category_ids) => {
+  return sql.query("SELECT * FROM BlogCategory WHERE category_id IN (?)", [category_ids], function (err, res) {
   	console.log("daldlknalkdnakdnkjanda")
   	console.log(category_ids)
   	console.log(res)
@@ -26,6 +26,17 @@ BlogCategory.getBlogCategory = function (category_ids) {
     return res
     // result(null, null);
   }).then();
+};
+
+BlogCategory.create = ([values], result) => {
+	sql.query('INSERT INTO BlogCategory (blog_id, category_id) VALUES (?, ?)', values, (err, res) => {
+      if (err) {
+        console.log("error: ", err);
+        result(err, null);
+        return;
+      }
+      result(null, res);
+    });
 };
 
 module.exports = BlogCategory;
