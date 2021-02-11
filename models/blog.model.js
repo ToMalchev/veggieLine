@@ -18,7 +18,6 @@ Blog.findById = (BlogId, result) => {
       return;
     }
     if (res.length) {
-
       result(null, res[0]);
       return;
     }

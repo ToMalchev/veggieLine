@@ -18,7 +18,8 @@ exports.create = (req, res) => {
     image: incomeBlog.image,
     description: incomeBlog.description,
     user_id: req.user.id,
-    blog_id: null
+    blog_id: null,
+    categories: null
   });
 
   // Save Blog in the database
@@ -44,12 +45,33 @@ exports.create = (req, res) => {
 // Retrieve all Blogs from the database.
 exports.findAll = (req, res) => {
   Blog.getAll((err, data) => {
+    var blog_list = [];
+    var count_data = 0;
+    data.forEach(obj => {
+      let b = new Blog(obj);
+
+      BlogCategory.getByBlogId(obj.blog_id, (err_1, data_1) => {
+        if (err_1) {
+          res.status(500).send("Some error occurred while retrieving blog category.")
+        }
+        else {
+          b.categories = data_1;
+          blog_list.push(b);
+        }
+        if (count_data === data.length-1){
+          console.log(blog_list);
+          res.send(blog_list);
+        };
+        count_data++;
+      });
+    });
+    
     if (err)
       res.status(500).send({
         message:
           err.message || "Some error occurred while retrieving Blogs."
       });
-    else res.send(data);
+    // else res.send(blog_list);
   });
 };
 

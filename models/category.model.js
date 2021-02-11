@@ -5,7 +5,6 @@ const Category = function(Category) {
   this.category_title = Category.blog_title;
 };
 
-
 Category.getAll = result => {
   sql.query("SELECT * FROM Category", (err, res) => {
     if (err) {
@@ -16,5 +15,10 @@ Category.getAll = result => {
     return result(null, res);
   });
 };
+
+// Category.create = (req, res) => {
+
+
+// };
 
 module.exports = Category;
