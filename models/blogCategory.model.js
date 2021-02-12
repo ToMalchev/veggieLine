@@ -30,12 +30,13 @@ BlogCategory.getBlogCategory = (category_ids) => {
 
 BlogCategory.getByBlogId = (blog_id, result) => {
 	sql.query('SELECT c.category_id, c.name FROM BlogCategory bc, Category c WHERE blog_id = ? AND c.category_id=bc.category_id', blog_id, (err, res) => {
+      console.log(res)
       if (err) {
         console.log("error: ", err);
-        result(err, null);
+        result(err, null)
         return;
       }
-      result(null, res);
+        result(null,res);
 	});
 };
 

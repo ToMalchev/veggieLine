@@ -1,4 +1,5 @@
 const sql = require("./db.js");
+const BlogCategory = require("./blogCategory.model.js");
 
 // constructor
 const Blog = function(Blog) {
@@ -28,13 +29,38 @@ Blog.findById = (BlogId, result) => {
 };
 
 Blog.getAll = result => {
-  sql.query("SELECT * FROM Blog", (err, res) => {
+  let sql_query = "SELECT distinct (b.blog_id),"
++"                b.title,"
++"                b.content,"
++"                b.image,"
++"                b.description,"
++"                CONCAT('[', categoryTable.res, ']') as categories"
++"  FROM Blog b,"
++"       Category c,"
++"       BlogCategory bc,"
++"       (SELECT bb.blog_id,"
++"               GROUP_CONCAT(CONCAT('{category_id:',"
++"                                   cc.category_id,"
++"                                   ',name:',"
++"                                   cc.name,"
++"                                   '}') SEPARATOR ', ') AS res"
++"          FROM Category     cc,"
++"               Blog         bb,"
++"               BlogCategory bcc"
++"         WHERE cc.category_id = bcc.category_id"
++"           AND bb.blog_id = bcc.blog_id"
++"         group by bb.blog_id) as categoryTable"
++" WHERE b.blog_id = bc.blog_id"
++"   AND c.category_id = bc.category_id"
++"   AND categoryTable.blog_id = b.blog_id"
++"   AND (b.title LIKE '%Pisanici%' OR b.description LIKE '%Pisanici%')"
++"   AND b.blog_id IN (SELECT blog_id FROM BlogCategory WHERE category_id IN (2));";
+  sql.query(sql_query, (err, res) => {
     if (err) {
       console.log("error: ", err);
       result(err, null);
       return;
-    }
-
+    };
     result(null, res);
   });
 };
