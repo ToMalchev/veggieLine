@@ -141,10 +141,12 @@ exports.deleteAll = (req, res) => {
 };
 
 exports.search = (req, res) => {
-  const categories = req.query.categories.replace(" ", "").split(","); 
-  const name = req.query.name;
+  const categories = req.query.categories
+  if (categories) {
+    categories = categories.replace(" ", "").split(","); 
+  }
 
-  Blog.search(name, categories, (err, data)=>{
+  Blog.search(req.query.name, categories, (err, data)=>{
     if (err)
       res.status(500).send({
         message:

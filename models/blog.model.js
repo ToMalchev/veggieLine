@@ -164,18 +164,34 @@ Blog.removeAll = result => {
 };
 
 Blog.search = (name, category_ids, result) => {
-  let query_1 = 'SELECT b.blog_id,'
-        + '       b.title,'
-        + '       b.content,'
-        + '       b.image,'
-        + '       b.description,'
-        + '       c.name'
-        + '  FROM Blog b, Category c, BlogCategory bc'
-        + ' WHERE b.blog_id = bc.blog_id'
-        + '   AND c.category_id = bc.category_id';
+
+let query_1 = "SELECT distinct (b.blog_id),"
++"                b.title,"
++"                b.content,"
++"                b.image,"
++"                b.description,"
++"                CONCAT('[', categoryTable.res, ']') as categories"
++"  FROM Blog b,"
++"       Category c,"
++"       BlogCategory bc,"
++"       (SELECT bb.blog_id,"
++"               GROUP_CONCAT(CONCAT('{category_id:',"
++"                                   cc.category_id,"
++"                                   ',name:',"
++"                                   cc.name,"
++"                                   '}') SEPARATOR ', ') AS res"
++"          FROM Category     cc,"
++"               Blog         bb,"
++"               BlogCategory bcc"
++"         WHERE cc.category_id = bcc.category_id"
++"           AND bb.blog_id = bcc.blog_id"
++"         group by bb.blog_id) as categoryTable"
++" WHERE b.blog_id = bc.blog_id"
++"   AND c.category_id = bc.category_id"
++"   AND categoryTable.blog_id = b.blog_id";
 
   let query_2 = name? ` AND (b.title like '%${name}%' OR b.description like '%${name}%')`:"";
-  let query_3 = (category_ids.length >0 && category_ids[0]!='')? ` AND b.blog_id IN (SELECT blog_id FROM BlogCategory WHERE category_id IN (${category_ids}));`: ";";
+  let query_3 = (category_ids && category_ids.length >0 && category_ids[0]!='')? ` AND b.blog_id IN (SELECT blog_id FROM BlogCategory WHERE category_id IN (${category_ids}));`: ";";
 
   let final_query = query_1 + query_2 + query_3;
   sql.query(final_query, (err, res) => {
