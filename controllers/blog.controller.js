@@ -181,7 +181,7 @@ exports.search = (req, res) => {
       // console.log(data)
       data = getCategoriesBlog(data);
       let pages_num = Math.ceil(data?data.length/4:1)
-      let data_final = {blogs: data, blog_count: data.length, pages_num}
+      let data_final = {blogs: data, blog_count: data.length, pages_num: pages_num}
       res.send(data_final);
 
     };
