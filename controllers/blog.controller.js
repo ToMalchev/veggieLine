@@ -1,6 +1,26 @@
 const Blog = require("../models/blog.model.js");
 const BlogCategory = require("../models/blogCategory.model.js")
 
+const getCategoriesBlog = (data) => {
+  data = data.map(obj =>{
+  var blog = obj;
+  var category_list = []
+  let categories = obj.categories.split(';')
+  categories.forEach(category => {
+    var category_obj = {}
+    let cat_fields = category.split(',')
+    cat_fields.forEach(field => {
+      let vars = field.split(':')
+      category_obj[vars[0]] = vars[1]
+    })
+    category_list.push(category_obj)
+  })
+  blog.categories = category_list
+  return blog;
+  });
+  return data;
+};
+
 // Create and Save a new Blog
 exports.create = (req, res) => {
   // Validate request
@@ -28,11 +48,8 @@ exports.create = (req, res) => {
     if(err) {
       res.status(500).send("Some error occurred while saving blog.")
     } else {
-      console.log("Result blog id")
-      console.log(blogId)
       let categoryList = [];
       incomeBlog.categories.forEach(category => {categoryList.push([blogId, category.category_id]);});
-      console.log(categoryList);
       BlogCategory.create(categoryList, (err_1, data) => {
         if (err_1) {
           res.status(500).send("Some error occurred while saving blog category.")
@@ -50,7 +67,9 @@ exports.findAll = (req, res) => {
         message:
           err.message || "Some error occurred while retrieving Blogs."
       });
-    else res.send(data);
+    else {
+      data = getCategoriesBlog(data);
+      res.send(data);}
   });
 };
 
@@ -62,7 +81,10 @@ exports.findLimited = (req, res) => {
         message:
           err.message || "Some error occurred while retrieving Blogs."
       });
-    else res.send(data);
+    else {
+      data = getCategoriesBlog(data);
+      res.send(data);
+    }
   });
 };
 
@@ -79,7 +101,10 @@ exports.findOne = (req, res) => {
           message: "Error retrieving Blog with id " + req.query.id
         });
       }
-    } else res.status(200).send(data);
+    } else {
+      data = getCategoriesBlog(data);
+      res.status(200).send(data[0]);
+    }
   });
 };
 
@@ -152,7 +177,14 @@ exports.search = (req, res) => {
         message:
           err.message || "Some error occurred while retrieving Blogs."
       });
-    else res.send(data);
+    else {
+      // console.log(data)
+      data = getCategoriesBlog(data);
+      let pages_num = Math.ceil(data?data.length/4:1)
+      let data_final = {blogs: data, blog_count: data.length, pages_num}
+      res.send(data_final);
+
+    };
   });
 
 };
