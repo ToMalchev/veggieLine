@@ -30,7 +30,6 @@ BlogCategory.getBlogCategory = (category_ids) => {
 
 BlogCategory.getByBlogId = (blog_id, result) => {
 	sql.query('SELECT c.category_id, c.name FROM BlogCategory bc, Category c WHERE blog_id = ? AND c.category_id=bc.category_id', blog_id, (err, res) => {
-      console.log(res)
       if (err) {
         console.log("error: ", err);
         result(err, null)
@@ -40,8 +39,8 @@ BlogCategory.getByBlogId = (blog_id, result) => {
 	});
 };
 
-BlogCategory.create = ([values], result) => {
-	sql.query('INSERT INTO BlogCategory (blog_id, category_id) VALUES (?, ?)', values, (err, res) => {
+BlogCategory.create = (values, result) => {
+	sql.query('INSERT INTO BlogCategory (blog_id, category_id) VALUES ?', [values], (err, res) => {
       if (err) {
         console.log("error: ", err);
         result(err, null);

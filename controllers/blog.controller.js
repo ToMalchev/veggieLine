@@ -48,7 +48,7 @@ exports.create = (req, res) => {
     if(err) {
       res.status(500).send("Some error occurred while saving blog.")
     } else {
-      let categoryList = [];
+      var categoryList = [];
       incomeBlog.categories.forEach(category => {categoryList.push([blogId, category.category_id]);});
       BlogCategory.create(categoryList, (err_1, data) => {
         if (err_1) {
