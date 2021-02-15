@@ -166,7 +166,7 @@ exports.deleteAll = (req, res) => {
 };
 
 exports.search = (req, res) => {
-  const categories = req.query.categories
+  var categories = req.query.categories
   if (categories) {
     categories = categories.replace(" ", "").split(","); 
   }
