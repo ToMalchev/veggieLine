@@ -170,7 +170,7 @@ exports.search = (req, res) => {
   if (categories) {
     categories = categories.replace(" ", "").split(","); 
   }
-  const page = req.query.page;
+  const page = req.query.page?req.query.page:1;
   const offset = page==1?0:(page-1)*4;
 
   Blog.search(req.query.name, categories, offset, (err, data) => {
