@@ -2,7 +2,7 @@ const util = require("util");
 const multer = require('multer');
 const path = require('path');
 
-const dest_path = "/home/todorm/Projects/VeggieLine_FE/images/";
+const dest_path = "/home/veggie/Projects/VeggieLine_FE/images/";
 var image_name;
 
 let storage = multer.diskStorage({
