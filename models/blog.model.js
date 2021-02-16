@@ -11,12 +11,7 @@ const Blog = function(Blog) {
   this.categories = Blog.categories;
 };
 
-const base_query = 'SELECT distinct (b.blog_id),'
-+'                b.title,'
-+'                b.content,'
-+'                b.image,'
-+'                b.description,'
-+'                categoryTable.res as categories'
+const base_query = 'SELECT DISTINCT (b.blog_id), b.title, b.content, b.image, b.description, categoryTable.res as categories'
 +'  FROM Blog b,'
 +'       Category c,'
 +'       BlogCategory bc,'
@@ -35,6 +30,13 @@ const base_query = 'SELECT distinct (b.blog_id),'
 +' WHERE b.blog_id = bc.blog_id'
 +'   AND c.category_id = bc.category_id'
 +'   AND categoryTable.blog_id = b.blog_id';
+
+const baseQuery = (name, category_ids) => {
+  let query_2 = name? ` AND (b.title like '%${name}%' OR b.description like '%${name}%')`:"";
+  let query_3 = (category_ids && category_ids.length >0 && category_ids[0]!='')? ` AND b.blog_id IN (SELECT blog_id FROM BlogCategory WHERE category_id IN (${category_ids}))`: "";
+  let query = base_query + query_2 + query_3;
+  return query;
+};
 
 Blog.findById = (BlogId, result) => {
 
@@ -166,19 +168,41 @@ Blog.removeAll = result => {
   });
 };
 
-Blog.search = (name, category_ids, result) => {
+Blog.search = (name, category_ids, offset, result) => {
 
   let query_2 = name? ` AND (b.title like '%${name}%' OR b.description like '%${name}%')`:"";
-  let query_3 = (category_ids && category_ids.length >0 && category_ids[0]!='')? ` AND b.blog_id IN (SELECT blog_id FROM BlogCategory WHERE category_id IN (${category_ids}));`: ";";
+  let query_3 = (category_ids && category_ids.length >0 && category_ids[0]!='')? ` AND b.blog_id IN (SELECT blog_id FROM BlogCategory WHERE category_id IN (${category_ids}))`: "";
+  let query_4 = ` ORDER BY title LIMIT 4 OFFSET ${offset};`
 
-  let final_query = base_query + query_2 + query_3;
+  let final_query = base_query + query_2 + query_3 + query_4;
   sql.query(final_query, (err, res) => {
     if (err) {
       console.log("error: ", err);
       result(err, null);
       return;
     }
-    result(null, res);
+    Blog.count(name, category_ids, (err_1, res_1) => {
+      if (err_1) {
+        console.log("error: ", err_1);
+        result(err_1, null);
+        return;
+      }
+      let new_res = {blogs: res, count: res_1};
+      result(null, new_res);
+    });
+  });
+};
+
+Blog.count = (name, category_ids, result) => {
+  query = baseQuery(name, category_ids) + ";";
+  query = query.replace("DISTINCT (b.blog_id), b.title, b.content, b.image, b.description, categoryTable.res as categories", "COUNT(DISTINCT b.blog_id)");
+  sql.query(query, (err, res) => {
+    if (err) {
+      console.log("error: ", err);
+      result(err, null);
+      return;
+    }
+    result(null, res[0]["COUNT(DISTINCT b.blog_id)"]);
   });
 };
 

@@ -166,24 +166,27 @@ exports.deleteAll = (req, res) => {
 };
 
 exports.search = (req, res) => {
-  var categories = req.query.categories
+  var categories = req.query.categories;
   if (categories) {
     categories = categories.replace(" ", "").split(","); 
   }
+  const page = req.query.page;
+  const offset = page==1?0:(page-1)*4;
 
-  Blog.search(req.query.name, categories, (err, data)=>{
+  Blog.search(req.query.name, categories, offset, (err, data) => {
     if (err)
       res.status(500).send({
         message:
           err.message || "Some error occurred while retrieving Blogs."
       });
     else {
-      // console.log(data)
-      data = getCategoriesBlog(data);
-      let pages_num = Math.ceil(data?data.length/4:1)
-      let data_final = {blogs: data, blog_count: data.length, pages_num: pages_num}
+      let blogCount = data['count'];
+      data = getCategoriesBlog(data['blogs']);
+      let pages_num = Math.ceil(blogCount > 4 ? blogCount / 4 : 1);
+      let next = pages_num > page;
+      let previus = page > 1;
+      let data_final = {blogs: data, count: blogCount, page: page, pages: pages_num, next: next, previus: previus};
       res.send(data_final);
-
     };
   });
 
