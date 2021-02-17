@@ -42,7 +42,7 @@ exports.uploadImage = (req, res) => {
         if (err_1) {
           return res.status(404).send({message: `Not found blog with id: ${blogId}`})
         }
-        return res.send('Image uploaded!'); 
+        return res.status(201).send('Image uploaded!');
       });
     } catch(err) {
       return res.status(500).send({message: 'Failed to update image name!'});
