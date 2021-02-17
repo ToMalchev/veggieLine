@@ -54,7 +54,7 @@ exports.create = (req, res) => {
         if (err_1) {
           res.status(500).send("Some error occurred while saving blog category.")
         }
-        else res.send("Blog successfully added!");
+        else res.send(blogId);
       });    }
   });
 };
