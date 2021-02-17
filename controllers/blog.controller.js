@@ -1,5 +1,6 @@
 const Blog = require("../models/blog.model.js");
 const BlogCategory = require("../models/blogCategory.model.js")
+const upload = require("../middleware/upload.js")
 
 const getCategoriesBlog = (data) => {
   data = data.map(obj =>{
@@ -29,7 +30,6 @@ exports.create = (req, res) => {
       message: "Content can not be empty!"
     });
   }
-  console.log(req.body.blog);
   let incomeBlog = req.body.blog;
   // Create a Blog
   const blog = new Blog({
@@ -110,28 +110,45 @@ exports.findOne = (req, res) => {
 
 // Update a Blog identified by the BlogId in the request
 exports.update = (req, res) => {
+  console.log(req.body);
   // Validate Request
   if (!req.body) {
     res.status(400).send({
       message: "Content can not be empty!"
     });
   }
-
+  
   Blog.updateById(
-    req.params.blog_id,
+    req.query.blog_id,
     new Blog(req.body),
     (err, data) => {
       if (err) {
         if (err.kind === "not_found") {
           res.status(404).send({
-            message: `Not found Blog with id ${req.params.blog_id}.`
+            message: `Not found Blog with id ${req.query.blog_id}.`
           });
         } else {
           res.status(500).send({
-            message: "Error updating Blog with id " + req.params.blog_id
+            message: "Error updating Blog with id " + req.query.blog_id
           });
         }
-      } else res.send(data);
+      } else {
+        upload(req, res, (err, nameF) => {
+        if (req.fileValidationError) {
+          return res.status(500).send({message: req.fileValidationError});
+        }
+        else if (!req.file) {
+          return res.status(404).send({message: 'Please select an image to upload'});
+        }
+        else if (err instanceof multer.MulterError) {
+          return res.status(500).send({message: err});
+        }
+        else if (err) {
+          return res.status(500).send({message: err});
+        }
+        res.send(data);
+      });
+      }
     }
   );
 };
