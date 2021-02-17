@@ -20,10 +20,9 @@ let upload = multer({ storage: storage }).single('image');
 exports.uploadImage = (req, res) => {
   let blogId = req.query.blogId;
   imageName = "IMAGE-" + blogId;
-  console.log(req.body)
+  console.log('blog id: '+blogId)
 
   upload(req, res, (err, nameF) => {
-    console.log(nameF)
     if (req.fileValidationError) {
       return res.status(500).send({message: req.fileValidationError});
     }
