@@ -186,7 +186,7 @@ exports.search = (req, res) => {
       let next = pages_num > page;
       let previus = page > 1;
       let data_final = {blogs: data, count: blogCount, page: page, pages: pages_num, next: next, previus: previus};
-      res.set('Content-Type', 'utf-8');
+      res.setHeader("Content-Type", "application/json; charset=utf-8");
       res.send(data_final);
     };
   });
