@@ -100,8 +100,8 @@ Blog.create = (Blog, result) => {
 
 Blog.updateById = (id, Blog, result) => {
   sql.query(
-    "UPDATE Blog SET title = ?, content = ?, image = ? WHERE blog_id = ?",
-    [Blog.email, Blog.name, Blog.active, id],
+    "UPDATE Blog SET title = ?, content = ?, description = ?, image = ? WHERE blog_id = ?",
+    [Blog.title, Blog.content, Blog.description, Blog.image, id],
     (err, res) => {
       if (err) {
         console.log("error: ", err);
@@ -113,7 +113,7 @@ Blog.updateById = (id, Blog, result) => {
         result({ kind: "not_found" }, null);
         return;
       }
-      result(null, { id: id, ...Blog });
+      result(null, { id: id, Blog });
     }
   );
 };
@@ -128,9 +128,11 @@ Blog.updateImageById = (id, imagePath, result) => {
         result(err, null);
         return;
       }
+      console.log(res);
+      console.log('jasnakjnsjkansjknasjkasnkjanskja')
       if (res.affectedRows == 0) {
         // not found Blog with the id
-        result({ kind: "not_found" }, null);
+        result("not found", null);
         return;
       }
       result(null, res.affectedRows);

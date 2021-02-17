@@ -39,6 +39,7 @@ exports.uploadImage = (req, res) => {
   
     try {
       Blog.updateImageById(blogId, imageName, (err_1, data) => {
+        console.log(data)
         if (err_1) {
           return res.status(404).send({message: `Not found blog with id: ${blogId}`})
         }
