@@ -173,7 +173,7 @@ exports.search = (req, res) => {
   const page = req.query.page?req.query.page:1;
   const offset = page==1?0:(page-1)*4;
 
-  Blog.search(req.query.name, categories, offset, (err, data) => {
+  Blog.search(req.query.search, categories, offset, (err, data) => {
     if (err)
       res.status(500).send({
         message:
