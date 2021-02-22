@@ -16,16 +16,16 @@ module.exports = app => {
   app.get("/blog", blog.findOne);
 
   // Update a Blog with customerId
-  app.put("/update/blog/:id", verify.authenticateJWT, blog.update);
+  app.put("/update/blog", verify.authenticateJWT, blog.update);
 
   // Delete a Blog with customerId
-  app.delete("/blogs/delete/:id", verify.authenticateJWT, blog.delete);
+  app.delete("/blogs/delete", verify.authenticateJWT, blog.delete);
 
   // Delete all Blogs
-  app.delete("/blogs/delete", verify.authenticateJWT, blog.deleteAll);
+  app.delete("/blogs/deleteAll", verify.authenticateJWT, blog.deleteAll);
 
   // Upload blog image
   app.post("/blog/image", verify.authenticateJWT, upload.uploadImage);
 
-  app.get("/blog/search", blog.search)
+  app.get("/blog/search", blog.search);
 };

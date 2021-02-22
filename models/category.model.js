@@ -16,9 +16,58 @@ Category.getAll = result => {
   });
 };
 
-// Category.create = (req, res) => {
+Category.create = (category, result) => {
+  sql.query(
+    "INSERT INTO Category (name) VALUES (?)",
+    category, (err, res) => {
+      if (err) {
+        console.log("error: ", err);
+        result(err, null);
+        return;
+      }
+      result(null, res.insert_id)
+    }
+  );
+};
 
 
-// };
+Category.remove = (id, result) => {
+  sql.query("DELETE FROM Category WHERE category_id = ?", id, (err, res) => {
+    if (err) {
+      console.log("error: ", err);
+      result(err, null);
+      return;
+    }
+
+    if (res.affectedRows == 0) {
+      // not found Category with the id
+      result({ kind: "not_found" }, null);
+      return;
+    }
+
+    result(null, res);
+  });
+};
+
+Category.update = (id, name, result) => {
+  sql.query(
+    "UPDATE Category SET name=? WHERE category_id = ?",
+    [name, id],
+    (err, res) => {
+      if (err) {
+        console.log("error: ", err);
+        result(err, null);
+        return;
+      }
+      if (res.affectedRows == 0) {
+        // not found Category with the id
+        result({ kind: "not_found" }, null);
+        return;
+      }
+      result(null, { id: id, Category });
+    }
+  );
+};
+
 
 module.exports = Category;

@@ -59,6 +59,7 @@ Blog.findById = (BlogId, result) => {
 };
 
 Blog.getAll = result => {
+  console.log('asasasa')
   sql.query(base_query, (err, res) => {
     if (err) {
       console.log("error: ", err);
@@ -101,8 +102,8 @@ Blog.create = (Blog, result) => {
 
 Blog.updateById = (id, Blog, result) => {
   sql.query(
-    "UPDATE Blog SET title = ?, content = ?, description = ?, image = ? WHERE blog_id = ?",
-    [Blog.title, Blog.content, Blog.description, Blog.image, id],
+    "UPDATE Blog SET title = ?, content = ?, description = ? WHERE blog_id = ?",
+    [Blog.title, Blog.content, Blog.description, id],
     (err, res) => {
       if (err) {
         console.log("error: ", err);
@@ -142,7 +143,7 @@ Blog.updateImageById = (id, imagePath, result) => {
 };
 
 Blog.remove = (id, result) => {
-  sql.query("DELETE FROM Blogs WHERE blog_id = ?", id, (err, res) => {
+  sql.query("DELETE FROM Blog WHERE blog_id = ?", id, (err, res) => {
     if (err) {
       console.log("error: ", err);
       result(err, null);
@@ -173,11 +174,10 @@ Blog.removeAll = result => {
 
 Blog.search = (name, category_ids, offset, result) => {
 
-  let query_2 = name? ` AND (b.title like '%${name}%' OR b.description like '%${name}%')`:"";
-  let query_3 = (category_ids && category_ids.length >0 && category_ids[0]!='')? ` AND b.blog_id IN (SELECT blog_id FROM BlogCategory WHERE category_id IN (${category_ids}))`: "";
-  let query_4 = ` ORDER BY title LIMIT 4 OFFSET ${offset};`
+  base_query = baseQuery(name, category_ids)
+  let query_order = ` ORDER BY title LIMIT 4 OFFSET ${offset};`
 
-  let final_query = base_query + query_2 + query_3 + query_4;
+  let final_query = base_query + query_order;
   sql.query(final_query, (err, res) => {
     if (err) {
       console.log("error: ", err);

@@ -31,6 +31,11 @@ exports.create = (req, res) => {
     });
   }
   let incomeBlog = req.body.blog;
+  if (!incomeBlog.categories || !incomeBlog.title) {
+    res.status(400).send({
+      message: "Title and or categories can not be empty!"
+    });
+  };
   // Create a Blog
   const blog = new Blog({
     title: incomeBlog.title,
@@ -116,7 +121,12 @@ exports.update = (req, res) => {
     res.status(400).send({
       message: "Content can not be empty!"
     });
-  }
+  };
+  if (!req.query.categories || !req.query.title) {
+    res.status(400).send({
+      message: "Title and or categories can not be empty!"
+    });
+  };
   
   Blog.updateById(
     req.query.blog_id,
@@ -155,18 +165,22 @@ exports.update = (req, res) => {
 
 // Delete a Blog with the specified blog_id in the request
 exports.delete = (req, res) => {
-  Blog.remove(req.params.blog_id, (err, data) => {
+  console.log(req.query)
+  Blog.remove(req.query.blog_id, (err, data) => {
     if (err) {
       if (err.kind === "not_found") {
         res.status(404).send({
-          message: `Not found Blog with id ${req.params.blog_id}.`
+          message: `Not found Blog with id ${req.query.blog_id}.`
         });
       } else {
         res.status(500).send({
-          message: "Could not delete Blog with id " + req.params.blog_id
+          message: "Could not delete Blog with id " + req.query.blog_id
         });
       }
-    } else res.send({ message: `Blog was deleted successfully!` });
+    } else {
+      exports.findAll(req, res);
+      // res.send({ message: `Blog was deleted successfully!` });
+    }
   });
 };
 
