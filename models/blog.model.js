@@ -174,10 +174,10 @@ Blog.removeAll = result => {
 
 Blog.search = (name, category_ids, offset, result) => {
 
-  base_query = baseQuery(name, category_ids)
+  let query = baseQuery(name, category_ids);
   let query_order = ` ORDER BY title LIMIT 4 OFFSET ${offset};`
 
-  let final_query = base_query + query_order;
+  let final_query = query + query_order;
   sql.query(final_query, (err, res) => {
     if (err) {
       console.log("error: ", err);
@@ -197,7 +197,7 @@ Blog.search = (name, category_ids, offset, result) => {
 };
 
 Blog.count = (name, category_ids, result) => {
-  query = baseQuery(name, category_ids) + ";";
+  let query = baseQuery(name, category_ids) + ";";
   query = query.replace("DISTINCT (b.blog_id), b.title, b.content, b.image, b.description, categoryTable.res as categories", "COUNT(DISTINCT b.blog_id)");
   sql.query(query, (err, res) => {
     if (err) {
