@@ -37,7 +37,7 @@ exports.update = (req, res) => {
     });
   }
   let name = req.body.name;
-  let category_id = req.query.category_id;
+  let category_id = req.body.category_id;
   Category.update(
     category_id,
     name,
@@ -53,23 +53,24 @@ exports.update = (req, res) => {
           });
         }
       } else {
-        res.send(data);
+        exports.findAll(req, res);
+        // res.send(data);
       }
     }
   );
 };
 
 exports.delete = (req, res) => {
-  console.log(req.query)
-  Category.remove(req.query.category_id, (err, data) => {
+  
+  Category.remove(req.body.category_id, (err, data) => {
     if (err) {
       if (err.kind === "not_found") {
         res.status(404).send({
-          message: `Not found Slogan with id ${req.query.category_id}.`
+          message: `Not found Slogan with id ${req.body.category_id}.`
         });
       } else {
         res.status(500).send({
-          message: "Could not delete Slogan with id " + req.query.category_id
+          message: "Could not delete Slogan with id " + req.body.category_id
         });
       }
     } else {

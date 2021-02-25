@@ -52,7 +52,7 @@ exports.update = (req, res) => {
       message: "Content can not be empty!"
     });
   }
-  let slogan_id = req.query.slogan_id
+  let slogan_id = req.body.slogan_id
   let name = req.body.name
   Slogan.update(
     slogan_id,
@@ -69,23 +69,23 @@ exports.update = (req, res) => {
           });
         }
       } else {
-        res.send(data);
+        exports.findAll(req, res);
+        // res.send(data);
       }
     }
   );
 }
 
 exports.delete = (req, res) => {
-  console.log(req.query)
-  Slogan.remove(req.query.slogan_id, (err, data) => {
+  Slogan.remove(req.body.slogan_id, (err, data) => {
     if (err) {
       if (err.kind === "not_found") {
         res.status(404).send({
-          message: `Not found Slogan with id ${req.query.slogan_id}.`
+          message: `Not found Slogan with id ${req.body.slogan_id}.`
         });
       } else {
         res.status(500).send({
-          message: "Could not delete Slogan with id " + req.query.slogan_id
+          message: "Could not delete Slogan with id " + req.body.slogan_id
         });
       }
     } else {
