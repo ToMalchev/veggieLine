@@ -4,7 +4,8 @@ module.exports = app => {
   const verify = require('../middleware/login.js');
 
   // Slogan
-  app.get("/slogans", slogan.genSlogan);
+  app.get("/slogans", slogan.findAll);
+  app.get("/slogans/random", slogan.genSlogan)
   app.post("/slogan/add", slogan.create);
   app.put("/slogan/update", verify.authenticateJWT, slogan.update);
   app.delete("/slogan/delete", verify.authenticateJWT, slogan.delete);
