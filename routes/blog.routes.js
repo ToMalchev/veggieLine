@@ -16,13 +16,13 @@ module.exports = app => {
   app.get("/blog", blog.findOne);
 
   // Update a Blog with customerId
-  app.put("/update/blog", verify.authenticateJWT, blog.update);
+  app.post("/blog/update", verify.authenticateJWT, blog.update);
 
   // Delete a Blog with customerId
-  app.delete("/blogs/delete", verify.authenticateJWT, blog.delete);
+  app.delete("/blog/delete", verify.authenticateJWT, blog.delete);
 
   // Delete all Blogs
-  app.delete("/blogs/deleteAll", verify.authenticateJWT, blog.deleteAll);
+  app.delete("/blogs/delete", verify.authenticateJWT, blog.deleteAll);
 
   // Upload blog image
   app.post("/blog/image", verify.authenticateJWT, upload.uploadImage);

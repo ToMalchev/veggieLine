@@ -6,7 +6,7 @@ module.exports = app => {
   // Categories
   app.get("/categories", category.findAll);
   app.post("/category/add", category.create);
-  app.put("/category/update", verify.authenticateJWT, category.update);
+  app.post("/category/update", verify.authenticateJWT, category.update);
   app.delete("/category/delete", verify.authenticateJWT, category.delete);
 
 };
