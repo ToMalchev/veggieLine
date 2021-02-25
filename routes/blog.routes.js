@@ -19,10 +19,10 @@ module.exports = app => {
   app.post("/blog/update", verify.authenticateJWT, blog.update);
 
   // Delete a Blog with customerId
-  app.delete("/blog/delete", verify.authenticateJWT, blog.delete);
+  app.post("/blog/delete", verify.authenticateJWT, blog.delete);
 
   // Delete all Blogs
-  app.delete("/blogs/delete", verify.authenticateJWT, blog.deleteAll);
+  app.post("/blogs/delete", verify.authenticateJWT, blog.deleteAll);
 
   // Upload blog image
   app.post("/blog/image", verify.authenticateJWT, upload.uploadImage);
