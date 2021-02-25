@@ -49,7 +49,6 @@ exports.create = (req, res) => {
 
   // Save Blog in the database
   Blog.create(blog, (err, blogId) => {
-
     if(err) {
       res.status(500).send("Some error occurred while saving blog.")
     } else {
@@ -165,16 +164,15 @@ exports.update = (req, res) => {
 
 // Delete a Blog with the specified blog_id in the request
 exports.delete = (req, res) => {
-  console.log(req.query)
-  Blog.remove(req.query.blog_id, (err, data) => {
+  Blog.remove(req.body.blog_id, (err, data) => {
     if (err) {
       if (err.kind === "not_found") {
         res.status(404).send({
-          message: `Not found Blog with id ${req.query.blog_id}.`
+          message: `Not found Blog with id ${req.body.blog_id}.`
         });
       } else {
         res.status(500).send({
-          message: "Could not delete Blog with id " + req.query.blog_id
+          message: "Could not delete Blog with id " + req.body.blog_id
         });
       }
     } else {
