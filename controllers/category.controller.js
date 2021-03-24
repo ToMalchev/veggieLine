@@ -18,7 +18,7 @@ exports.findAll = (req, res) => {
 exports.create = (req, res) => {
   console.log(req.body)
   console.log("msadklamlkdnmaskldmlakmdklamd")
-  Category.create(req.body.name, (err, data) =>{
+  Category.create(req.body.category.name, (err, data) =>{
     if (err) {
       res.status(500).send({
         message:
@@ -36,8 +36,8 @@ exports.update = (req, res) => {
       message: "Content can not be empty!"
     });
   }
-  let name = req.body.name;
-  let category_id = req.body.category_id;
+  let name = req.body.category.name;
+  let category_id = req.body.category.category_id;
   Category.update(
     category_id,
     name,
@@ -61,8 +61,7 @@ exports.update = (req, res) => {
 };
 
 exports.delete = (req, res) => {
-  
-  Category.remove(req.body.category_id, (err, data) => {
+  Category.remove(req.body.category.category_id, (err, data) => {
     if (err) {
       if (err.kind === "not_found") {
         res.status(404).send({

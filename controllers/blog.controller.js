@@ -129,7 +129,7 @@ exports.update = (req, res) => {
   
   Blog.updateById(
     req.query.blog_id,
-    new Blog(req.body),
+    new Blog(req.body.blog),
     (err, data) => {
       if (err) {
         if (err.kind === "not_found") {
@@ -164,7 +164,8 @@ exports.update = (req, res) => {
 
 // Delete a Blog with the specified blog_id in the request
 exports.delete = (req, res) => {
-  Blog.remove(req.body.blog_id, (err, data) => {
+  let blog_id = req.body.blog.blog_id
+  Blog.remove(blog_id, (err, data) => {
     if (err) {
       if (err.kind === "not_found") {
         res.status(404).send({

@@ -52,8 +52,8 @@ exports.update = (req, res) => {
       message: "Content can not be empty!"
     });
   }
-  let slogan_id = req.body.slogan_id
-  let name = req.body.name
+  let slogan_id = req.body.slogan.slogan_id
+  let name = req.body.slogan.name
   Slogan.update(
     slogan_id,
     name,
