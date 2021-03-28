@@ -14,10 +14,10 @@ const app = express();
 // use CORS-enabled for all origins
 app.use(cors())
 // parse requests of content-type: application/json
-app.use(bodyParser.json({limit:'50mb'}));
+app.use(bodyParser.json({ limit: 50*1024*1024 }));
 
 // parse requests of content-type: application/x-www-form-urlencoded
-app.use(bodyParser.urlencoded({ extended: true, limit:'50mb' }));
+app.use(bodyParser.urlencoded({ extended: true, limit: 50*1024*1024 }));
 
 // simple route
 app.get("/", (req, res) => {

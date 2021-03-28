@@ -2,7 +2,7 @@ const Blog = require("../models/blog.model.js");
 const path = require('path')
 const multer  = require('multer');
 
-const imageDir = '/home/todorm/Projects/VeggieLine_FE/images/';
+const imageDir = '/home/veggie/Projects/VeggieLine_FE/images/';
 var imageName;
 
 const storage = multer.diskStorage({
@@ -15,7 +15,7 @@ const storage = multer.diskStorage({
   }
 });
 
-let upload = multer({ storage: storage, limits: {fileSize: 5MB}, }).single('image');
+let upload = multer({ storage: storage, limits: {fileSize: 20*1024*1024, filedSize: 20*1024*1024}, }).single('image');
 
 exports.uploadImage = (req, res) => {
   let blogId = req.query.blogId;
