@@ -15,7 +15,7 @@ const storage = multer.diskStorage({
   }
 });
 
-let upload = multer({ storage: storage, limits: {fileSize: 10000000}, }).single('image');
+let upload = multer({ storage: storage, limits: {fileSize: 5MB}, }).single('image');
 
 exports.uploadImage = (req, res) => {
   let blogId = req.query.blogId;
