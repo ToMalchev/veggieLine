@@ -61,6 +61,7 @@ exports.update = (req, res) => {
 };
 
 exports.delete = (req, res) => {
+  console.log(req.body)
   Category.remove(req.body.category.category_id, (err, data) => {
     if (err) {
       if (err.kind === "not_found") {
