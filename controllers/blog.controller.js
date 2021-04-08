@@ -170,7 +170,7 @@ exports.update = (req, res) => {
 
 // Delete a Blog with the specified blog_id in the request
 exports.delete = (req, res) => {
-  let blog_id = req.body.blog.blog_id
+  let blog_id = req.body.blog.blogId
   Blog.remove(blog_id, (err, data) => {
     if (err) {
       if (err.kind === "not_found") {
