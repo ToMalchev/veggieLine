@@ -18,7 +18,7 @@ exports.findAll = (req, res) => {
 exports.create = (req, res) => {
   console.log(req.body)
   console.log("msadklamlkdnmaskldmlakmdklamd")
-  Category.create(req.body.category.name, (err, data) =>{
+  Category.create(req.body.category, (err, data) =>{
     if (err) {
       res.status(500).send({
         message:
