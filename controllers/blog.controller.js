@@ -133,7 +133,7 @@ exports.update = (req, res) => {
     new Blog(req.body.blog),
     (err, data) => {
       if (err) {
-        if (err.kind === "not_found") {
+        if (err.kind && err.kind === "not_found") {
           res.status(404).send({
             message: `Not found Blog with id ${blog.blog_id}.`
           });
