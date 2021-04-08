@@ -121,24 +121,25 @@ exports.update = (req, res) => {
       message: "Content can not be empty!"
     });
   };
-  if (!req.query.categories || !req.query.title) {
+  const blog = req.body.blog
+  if (!blog.categories || !blog.title) {
     res.status(400).send({
       message: "Title and or categories can not be empty!"
     });
   };
   
   Blog.updateById(
-    req.query.blog_id,
+    blog.blog_id,
     new Blog(req.body.blog),
     (err, data) => {
       if (err) {
         if (err.kind === "not_found") {
           res.status(404).send({
-            message: `Not found Blog with id ${req.query.blog_id}.`
+            message: `Not found Blog with id ${blog.blog_id}.`
           });
         } else {
           res.status(500).send({
-            message: "Error updating Blog with id " + req.query.blog_id
+            message: "Error updating Blog with id " + blog.blog_id
           });
         }
       } else {
