@@ -19,7 +19,7 @@ Category.getAll = result => {
 Category.create = (category, result) => {
   sql.query(
     "INSERT INTO Category (name) VALUES (?)",
-    category, (err, res) => {
+    [category], (err, res) => {
       if (err) {
         console.log("error: ", err);
         result(err, null);
