@@ -6,6 +6,7 @@ const Blog = function(Blog) {
   this.blog_id = Blog.blog_id;
   this.title = Blog.title;
   this.content = Blog.content;
+  this.description = Blog.description;
   this.image = Blog.image;
   this.user_id = Blog.user_id;
   this.categories = Blog.categories;
