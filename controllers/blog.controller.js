@@ -146,9 +146,10 @@ exports.update = (req, res) => {
           });
         }
       } else {
-        req.query.blogId = data.blog.blog_id
-        upload1.uploadImage(req, res);
-        exports.findAll(req, res);
+        // req.query.blogId = data.blog.blog_id
+        // upload1.uploadImage(req, res);
+        res.send(data);
+        // exports.findAll(req, res);
       //   upload1.uploadImage((req, res) => {
       //   if (req.fileValidationError) {
       //     return res.status(500).send({message: req.fileValidationError});
