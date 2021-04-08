@@ -146,26 +146,10 @@ exports.update = (req, res) => {
           });
         }
       } else {
-        // req.query.blogId = data.blog.blog_id
-        // upload1.uploadImage(req, res);
+        console.log(data.blog);
         res.send(data);
         // exports.findAll(req, res);
-      //   upload1.uploadImage((req, res) => {
-      //   if (req.fileValidationError) {
-      //     return res.status(500).send({message: req.fileValidationError});
-      //   }
-      //   else if (!req.file) {
-      //     return res.status(404).send({message: 'Please select an image to upload'});
-      //   }
-      //   else if (err instanceof multer.MulterError) {
-      //     return res.status(500).send({message: err});
-      //   }
-      //   else if (err) {
-      //     return res.status(500).send({message: err});
-      //   }
-      //   exports.findAll(req, res);
-      //   // res.send(data);
-      // });
+
       }
     }
   );
