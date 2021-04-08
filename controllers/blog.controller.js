@@ -159,7 +159,8 @@ exports.update = (req, res) => {
         else if (err) {
           return res.status(500).send({message: err});
         }
-        res.send(data);
+        exports.findAll(req, res);
+        // res.send(data);
       });
       }
     }
