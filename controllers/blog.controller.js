@@ -147,7 +147,7 @@ exports.update = (req, res) => {
         }
       } else {
         req.query.blogId = data.blog.blog_id
-        upload1.uploadImage(req, res, (err, nameF) => {
+        upload1.uploadImage((req, res) => {
         if (req.fileValidationError) {
           return res.status(500).send({message: req.fileValidationError});
         }
