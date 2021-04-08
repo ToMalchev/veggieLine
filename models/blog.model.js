@@ -105,6 +105,7 @@ Blog.updateById = (id, Blog, result) => {
     "UPDATE Blog SET title = ?, content = ?, description = ? WHERE blog_id = ?",
     [Blog.title, Blog.content, Blog.description, id],
     (err, res) => {
+      console.log(res)
       if (err) {
         console.log("error: ", err);
         result(err, null);
