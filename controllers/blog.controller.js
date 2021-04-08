@@ -132,6 +132,9 @@ exports.update = (req, res) => {
     blog.blog_id,
     new Blog(req.body.blog),
     (err, data) => {
+      console.log(err);
+      console.log('daaaataaaa')
+      console.log(data);
       if (err) {
         if (err.kind && err.kind === "not_found") {
           res.status(404).send({
