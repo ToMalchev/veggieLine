@@ -133,7 +133,7 @@ exports.update = (req, res) => {
     new Blog(req.body.blog),
     (err, data) => {
       console.log(err);
-      console.log('daaaataaaa')
+      console.log('daaaataaaa');
       console.log(data);
       if (err) {
         if (err.kind && err.kind === "not_found") {
@@ -147,22 +147,24 @@ exports.update = (req, res) => {
         }
       } else {
         req.query.blogId = data.blog.blog_id
-        upload1.uploadImage((req, res) => {
-        if (req.fileValidationError) {
-          return res.status(500).send({message: req.fileValidationError});
-        }
-        else if (!req.file) {
-          return res.status(404).send({message: 'Please select an image to upload'});
-        }
-        else if (err instanceof multer.MulterError) {
-          return res.status(500).send({message: err});
-        }
-        else if (err) {
-          return res.status(500).send({message: err});
-        }
+        upload1.uploadImage(req, res);
         exports.findAll(req, res);
-        // res.send(data);
-      });
+      //   upload1.uploadImage((req, res) => {
+      //   if (req.fileValidationError) {
+      //     return res.status(500).send({message: req.fileValidationError});
+      //   }
+      //   else if (!req.file) {
+      //     return res.status(404).send({message: 'Please select an image to upload'});
+      //   }
+      //   else if (err instanceof multer.MulterError) {
+      //     return res.status(500).send({message: err});
+      //   }
+      //   else if (err) {
+      //     return res.status(500).send({message: err});
+      //   }
+      //   exports.findAll(req, res);
+      //   // res.send(data);
+      // });
       }
     }
   );
