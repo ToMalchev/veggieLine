@@ -1,6 +1,6 @@
 const Blog = require("../models/blog.model.js");
 const BlogCategory = require("../models/blogCategory.model.js")
-const upload = require("../controllers/upload.controller.js")
+const upload1 = require("../controllers/upload.controller.js")
 
 const getCategoriesBlog = (data) => {
   data = data.map(obj =>{
@@ -147,7 +147,7 @@ exports.update = (req, res) => {
         }
       } else {
         req.query.blogId = data.blog.blog_id
-        upload.uploadImage(req, res, (err, nameF) => {
+        upload1.uploadImage(req, res, (err, nameF) => {
         if (req.fileValidationError) {
           return res.status(500).send({message: req.fileValidationError});
         }
