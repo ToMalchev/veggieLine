@@ -146,7 +146,7 @@ exports.update = (req, res) => {
           });
         }
       } else {
-        req.query.blog_id = data.Blog.blog_id
+        req.query.blogId = data.blog.blog_id
         upload.uploadImage(req, res, (err, nameF) => {
         if (req.fileValidationError) {
           return res.status(500).send({message: req.fileValidationError});
@@ -170,7 +170,7 @@ exports.update = (req, res) => {
 
 // Delete a Blog with the specified blog_id in the request
 exports.delete = (req, res) => {
-  let blog_id = req.body.blog.blogId
+  let blog_id = req.body.blog.blog_id
   Blog.remove(blog_id, (err, data) => {
     if (err) {
       if (err.kind === "not_found") {
