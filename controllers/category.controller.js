@@ -1,32 +1,21 @@
 const Category = require("../models/category.model.js");
+const errorHandlers = require("../base/errorHandler.js")
+
+const type = 'Category';
 
 // Retrieve all Category from the database.
 exports.findAll = (req, res) => {
   Category.getAll((err, data) => {
-    if (err) {
-      res.status(500).send({
-        message:
-          err.message || "Some error occurred while retrieving Category."
-      });
-    } else {
-      res.send(data);
-    }
+   let handleData = errorHandlers.baseCR(err, data, type, 'retrieving');
+   res.status(handleData[status]).send(handleData[data]);
   });
 };
 
 
 exports.create = (req, res) => {
-  console.log(req.body)
-  console.log("msadklamlkdnmaskldmlakmdklamd")
   Category.create(req.body.category, (err, data) =>{
-    if (err) {
-      res.status(500).send({
-        message:
-          err.message || "Some error occurred while creating the Slogan."
-      });
-      return
-    }
-    res.status(200).send({message: "Successfuly created Slogan"})
+    let handleData = errorHandlers.baseCR(err, data, type, 'creating');
+    res.status(handleData[status]).send(handleData[data]);
   });
 };
 
@@ -42,20 +31,12 @@ exports.update = (req, res) => {
     category_id,
     name,
     (err, data) => {
-      if (err) {
-        if (err.kind === "not_found") {
-          res.status(404).send({
-            message: `Not found Category with id ${category_id}.`
-          });
-        } else {
-          res.status(500).send({
-            message: "Error updating Category with id " + category_id
-          });
-        }
-      } else {
+      let handleData = errorHandlers.baseCR(err, data, type, 'updating');
+      if (handleData[status] === 200) {
         exports.findAll(req, res);
-        // res.send(data);
-      }
+      } else {
+        res.status(handleData[status]).send(handleData[data]);
+      };
     }
   );
 };
@@ -63,18 +44,11 @@ exports.update = (req, res) => {
 exports.delete = (req, res) => {
   console.log(req.body)
   Category.remove(req.body.category.category_id, (err, data) => {
-    if (err) {
-      if (err.kind === "not_found") {
-        res.status(404).send({
-          message: `Not found Slogan with id ${req.body.category_id}.`
-        });
+    let handleData = errorHandlers.baseCR(err, data, type, 'updating');
+      if (handleData[status] === 200) {
+        exports.findAll(req, res);
       } else {
-        res.status(500).send({
-          message: "Could not delete Slogan with id " + req.body.category_id
-        });
-      }
-    } else {
-      exports.findAll(req, res);
-    }
+        res.status(handleData[status]).send(handleData[data]);
+      };
   });
 };
