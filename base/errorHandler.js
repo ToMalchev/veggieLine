@@ -14,4 +14,4 @@ const baseRUD = (err, data, type, operation) => {
 	return {status: 200, data: data}
 };
 
-module.exports = [baseCR, baseRUD]
+module.exports = {baseCR, baseRUD}
