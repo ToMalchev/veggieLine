@@ -7,6 +7,10 @@ const type = 'Category';
 exports.findAll = (req, res) => {
   Category.getAll((err, data) => {
    let handleData = errorHandlers.baseCR(err, data, type, 'retrieving');
+   log('11111111')
+   log(handleData[status])
+   log('22222222222')
+   log(handleData[data])
    res.status(handleData[status]).send(handleData[data]);
   });
 };
