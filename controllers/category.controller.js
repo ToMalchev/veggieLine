@@ -49,7 +49,7 @@ exports.delete = (req, res) => {
   console.log(req.body)
   Category.remove(req.body.category.category_id, (err, data) => {
     let handleData = errorHandlers.baseCR(err, data, type, 'updating');
-      if (handleData[status] === 200) {
+      if (handleData['status'] === 200) {
         exports.findAll(req, res);
       } else {
         res.status(handleData['status']).send(handleData['data']);
