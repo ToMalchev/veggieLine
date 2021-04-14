@@ -7,11 +7,11 @@ const type = 'Category';
 exports.findAll = (req, res) => {
   Category.getAll((err, data) => {
    let handleData = errorHandlers.baseCR(err, data, type, 'retrieving');
-   log('11111111')
-   log(handleData[status])
-   log('22222222222')
-   log(handleData[data])
-   res.status(handleData[status]).send(handleData[data]);
+   console.log('11111111')
+   console.log(handleData['status'])
+   console.log('22222222222')
+   console.log(handleData['data'])
+   res.status(handleData['status']).send(handleData['data']);
   });
 };
 
@@ -19,7 +19,7 @@ exports.findAll = (req, res) => {
 exports.create = (req, res) => {
   Category.create(req.body.category, (err, data) =>{
     let handleData = errorHandlers.baseCR(err, data, type, 'creating');
-    res.status(handleData[status]).send(handleData[data]);
+    res.status(handleData['status']).send(handleData['data']);
   });
 };
 
@@ -36,10 +36,10 @@ exports.update = (req, res) => {
     name,
     (err, data) => {
       let handleData = errorHandlers.baseCR(err, data, type, 'updating');
-      if (handleData[status] === 200) {
+      if (handleData['status'] === 200) {
         exports.findAll(req, res);
       } else {
-        res.status(handleData[status]).send(handleData[data]);
+        res.status(handleData['status']).send(handleData['data']);
       };
     }
   );
@@ -52,7 +52,7 @@ exports.delete = (req, res) => {
       if (handleData[status] === 200) {
         exports.findAll(req, res);
       } else {
-        res.status(handleData[status]).send(handleData[data]);
+        res.status(handleData['status']).send(handleData['data']);
       };
   });
 };
