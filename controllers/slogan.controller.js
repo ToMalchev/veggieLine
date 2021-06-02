@@ -39,8 +39,8 @@ exports.findAll = (req, res) => {
 
 
 exports.create = (req, res) => {
-  console.log(req.body);
-  Slogan.create(req.body.name, (err, data) =>{
+  console.log(req.body.slogan);
+  Slogan.create(req.body.slogan, (err, data) =>{
     if (err) {
       res.status(500).send({
         message:
