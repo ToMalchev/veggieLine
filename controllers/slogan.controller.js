@@ -21,7 +21,7 @@ exports.genSlogan = (req, res) => {
       .sort((a, b) => a.sort - b.sort)
       .map((a) => a.value)
 
-    else res.send(shuffled);
+    res.send(shuffled);
   });
 };
 
