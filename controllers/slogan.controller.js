@@ -3,19 +3,25 @@ const Slogan = require("../models/slogan.model.js");
 // Retrieve all Slogans from the database.
 exports.genSlogan = (req, res) => {
   Slogan.getSloganList((err, data) => {
-  	const random_num = Math.floor(Math.random()*data.length);
-  	if (random_num > 5) {
-  		data = data.slice(random_num-3, random_num)
-  	}
-  	else {
-  		data = data.slice(random_num, random_num+3)
-  	};
-    if (err)
-      res.status(500).send({
-        message:
-          err.message || "Some error occurred while retrieving slogans."
-      });
-    else res.send(data);
+   // const random_num = Math.floor(Math.random()*data.length);
+   // if (random_num > 5) {
+   // 	data = data.slice(random_num-3, random_num)
+   // }
+   // else {
+   // 	data = data.slice(random_num, random_num+3)
+   // };
+   //  if (err)
+   //    res.status(500).send({
+   //      message:
+   //        err.message || "Some error occurred while retrieving slogans."
+   //    });
+
+    let shuffled = data
+      .map((a) => ({sort: Math.random(), value: a}))
+      .sort((a, b) => a.sort - b.sort)
+      .map((a) => a.value)
+
+    else res.send(shuffled);
   });
 };
 
